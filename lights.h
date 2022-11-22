@@ -4,7 +4,7 @@
 #ifndef LIGHTS_H_INCLUDED
 #define LIGHTS_H_INCLUDED
 
-#define LIGHTS_NUMBER 8
+#define LIGHTS_NUMBER 24
 
 void createMasks(int *reference);
 int isOn(int light, int light_id, int *masks);

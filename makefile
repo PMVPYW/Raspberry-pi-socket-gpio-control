@@ -5,7 +5,7 @@
 # date 2010-09-26 / updated: 2016-03-15 (Patricio)
 
 # Libraries to include (if any)
-LIBS=-pthread -lwiringPi#-lm 
+LIBS=-lm -pthread -lwiringPi
 
 # Compiler flags
 CFLAGS=-Wall -Wextra -ggdb -std=c11 -pedantic -D_POSIX_C_SOURCE=200809L #-pg
@@ -17,62 +17,79 @@ LDFLAGS=#-pg
 # IFLAGS=-br -brs -brf -npsl -ce -cli4 -bli4 -nut
 IFLAGS=-linux -brs -brf -br
 
-# Name of the executable
-PROGRAM=prog
+# name of the server executable
+SERVER=server
 
-# Prefix for the gengetopt file (if gengetopt is used)
-PROGRAM_OPT=args
+# Prefix for the server's gengetopt file
+SERVER_OPT=server_opt
 
-# Object files required to build the executable
-PROGRAM_OBJS=main.o debug.o memory.o $(PROGRAM_OPT).o lights.o misc.o
- 
-# Clean and all are not files
+# Object files required to build the server executable
+SERVER_OBJS=server.o debug.o memory.o $(SERVER_OPT).o lights.o misc.o
+
+# name of the client executable
+CLIENT=client
+
+# Prefix for the client's gengetopt file
+CLIENT_OPT=client_opt
+
+# Object files required to build the client executable
+CLIENT_OBJS=client.o debug.o memory.o $(CLIENT_OPT).o
+
+# Specifies which targets are not files
 .PHONY: clean all docs indent debugon
 
-all: $(PROGRAM)
+all: $(SERVER) $(CLIENT)
 
 # activate DEBUG, defining the SHOW_DEBUG macro
 debugon: CFLAGS += -D SHOW_DEBUG -g
-debugon: $(PROGRAM)
+debugon: $(SERVER) $(CLIENT)
 
 # activate optimization (-O...)
 OPTIMIZE_FLAGS=-O2 # possible values (for gcc): -O2 -O3 -Os -Ofast
 optimize: CFLAGS += $(OPTIMIZE_FLAGS)
 optimize: LDFLAGS += $(OPTIMIZE_FLAGS)
-optimize: $(PROGRAM)
+optimize: $(SERVER) $(CLIENT)
 
-$(PROGRAM): $(PROGRAM_OBJS)
-	$(CC) -o $@ $(PROGRAM_OBJS) $(LIBS) $(LDFLAGS)
+$(SERVER): $(SERVER_OBJS)
+	$(CC) -o $@ $(SERVER_OBJS) $(LIBS)
+
+$(CLIENT): $(CLIENT_OBJS)
+	$(CC) -o $@ $(CLIENT_OBJS) $(LIBS)
 
 # Dependencies
-args.o: args.c args.h
+client.o: client.c memory.h debug.h common.h client_opt.h
+client_opt.o: client_opt.c client_opt.h
 debug.o: debug.c debug.h
 lights.o: lights.c lights.h
-main.o: main.c lights.h misc.h
 memory.o: memory.c memory.h
 misc.o: misc.c misc.h
-
+server.o: server.c lights.h misc.h debug.h common.h server_opt.h
+server_opt.o: server_opt.c server_opt.h
 
 # disable warnings from gengetopt generated files
-$(PROGRAM_OPT).o: $(PROGRAM_OPT).c $(PROGRAM_OPT).h
+$(SERVER_OPT).o: $(SERVER_OPT).c $(SERVER_OPT).h
 	$(CC) -ggdb -std=c11 -pedantic -c $<
+
+$(CLIENT_OPT).o: $(CLIENT_OPT).c $(CLIENT_OPT).h
+	$(CC) -ggdb -std=c11 -pedantic -c $<
+
 
 #how to create an object file (.o) from C file (.c)
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
 # Generates command line arguments code from gengetopt configuration file
-$(PROGRAM_OPT).c $(PROGRAM_OPT).h: $(PROGRAM_OPT).ggo
-	gengetopt < $(PROGRAM_OPT).ggo --file-name=$(PROGRAM_OPT)
+$(SERVER_OPT).c $(SERVER_OPT).h: $(SERVER_OPT).ggo
+	gengetopt < $(SERVER_OPT).ggo --file-name=$(SERVER_OPT)
+
+$(CLIENT_OPT).c $(CLIENT_OPT).h: $(CLIENT_OPT).ggo
+	gengetopt < $(CLIENT_OPT).ggo --file-name=$(CLIENT_OPT)
 
 clean:
-	rm -f *.o core.* *~ $(PROGRAM) *.bak $(PROGRAM_OPT).h $(PROGRAM_OPT).c
+	rm -f *.o core.* *~ .*~ $(SERVER) $(CLIENT) *.bak $(SERVER_OPT).h $(SERVER_OPT).c $(CLIENT_OPT).h $(CLIENT_OPT).c
 
 docs: Doxyfile
 	doxygen Doxyfile
-
-Doxyfile:
-	doxygen -g Doxyfile
 
 # entry to create the list of dependencies
 depend:
