@@ -76,7 +76,7 @@ The objective of this project is to control the gpio pins of a raspberry with ud
 
 This project is made in:
 
-* C programming language
+ [![C][c-shield]][c-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -135,3 +135,5 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+[c-shield]: https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white
+[c-url]: https://www.learn-c.org
