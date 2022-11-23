@@ -24,23 +24,20 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
     <img src="logo.png" alt="Logo" width="80" height="80">
-  </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">IOT Project</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    An iot project for raspberry writen in C
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="[https://github.com/othneildrew/Best-README-Template/issues](https://github.com/PMVPYW/iot_project/issues)">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="[https://github.com/othneildrew/Best-README-Template/issues](https://github.com/PMVPYW/iot_project/issues)">Request Feature</a>
   </p>
 </div>
 
