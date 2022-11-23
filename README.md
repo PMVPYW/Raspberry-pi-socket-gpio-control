@@ -74,7 +74,7 @@ The objective of this project is to control the gpio pins of a raspberry with ud
 
 ### Built With
 
-This prject is made in:
+This project is made in:
 
 * C programming language
 
